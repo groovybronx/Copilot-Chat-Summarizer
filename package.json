@@ -1,0 +1,68 @@
+{
+  "name": "copilot-chat-summarizer",
+  "displayName": "Copilot Chat Summarizer",
+  "description": "Automatise la gestion et le résumé de l'historique de conversation Copilot Chat dans VS Code.",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:copilot-summarizer.start",
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "copilot-summarizer.start",
+        "title": "Copilot Summarizer: Start"
+      },
+      {
+        "command": "copilot-summarizer.summarizeNow",
+        "title": "Copilot Summarizer: Force summarize now"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Copilot Summarizer",
+      "properties": {
+        "copilotSummarizer.historyFilePath": {
+          "type": "string",
+          "default": ".vscode/copilot-chat-history.json",
+          "description": "Chemin relatif dans le workspace vers le fichier JSON contenant l'historique de conversation."
+        },
+        "copilotSummarizer.maxTokens": {
+          "type": "number",
+          "default": 3000,
+          "description": "Seuil approximatif de tokens après lequel un résumé sera généré."
+        },
+        "copilotSummarizer.batchSize": {
+          "type": "number",
+          "default": 20,
+          "description": "Nombre de messages anciens à regrouper dans un résumé."
+        },
+        "copilotSummarizer.openaiApiKeyEnv": {
+          "type": "string",
+          "default": "OPENAI_API_KEY",
+          "description": "Nom de la variable d'environnement contenant la clé OpenAI."
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.4",
+    "@types/node": "^14.14.33",
+    "@types/vscode": "^1.70.0"
+  }
+}
