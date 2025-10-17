@@ -33,11 +33,11 @@ export async function activate(context: vscode.ExtensionContext) {
       status.text = 'CopilotSummarizer: waiting for history';
       return;
     }
-    let raw = readFileSync(historyPath, 'utf8');
+    const raw = readFileSync(historyPath, 'utf8');
     let messages: ChatMessage[] = [];
     try {
       messages = JSON.parse(raw);
-    } catch (e) {
+    } catch {
       vscode.window.showErrorMessage('Copilot Summarizer: impossible de parser le fichier d\'historique.');
       return;
     }
@@ -58,9 +58,9 @@ export async function activate(context: vscode.ExtensionContext) {
         const newMessages = [summaryMessage, ...rest];
         writeFileSync(historyPath, JSON.stringify(newMessages, null, 2), 'utf8');
         vscode.window.showInformationMessage('Copilot Summarizer: résumé généré et appliqué.');
-        status.text = `CopilotSummarizer: tokens≈${newMessages.reduce((a,m)=>a+estimateTokens(m.content),0)}`;
-      } catch (err) {
-        vscode.window.showErrorMessage('Copilot Summarizer: erreur lors du résumé: ' + String(err));
+        status.text = `CopilotSummarizer: tokens≈${newMessages.reduce((a, m) => a + estimateTokens(m.content), 0)}`;
+      } catch {
+        vscode.window.showErrorMessage('Copilot Summarizer: erreur lors du résumé.');
         status.text = 'CopilotSummarizer: error';
       }
     }
@@ -83,4 +83,4 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(disposableStart, disposableForce);
 }
 
-export function deactivate() {}
+export function deactivate() { }
